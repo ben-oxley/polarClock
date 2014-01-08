@@ -2,9 +2,8 @@
 #include <time.h>
 
 Window *window;
-TextLayer *text_date_layer;
 TextLayer *text_time_layer;
-Layer *line_layer;
+Layer *graphics_layer;
 
 GPoint get_gpoint(int degrees,int radius){
   double x = degrees, y = degrees;
@@ -18,7 +17,7 @@ GPoint get_gpoint(int degrees,int radius){
   return a;
 }
 
-void line_layer_update_callback(Layer *layer, GContext* ctx) {
+void graphics_layer_update_callback(Layer *layer, GContext* ctx) {
   struct tm * timenow;
   time_t timestamp = time(NULL);
   timenow = localtime(&timestamp);
@@ -27,14 +26,14 @@ void line_layer_update_callback(Layer *layer, GContext* ctx) {
   APP_LOG(APP_LOG_LEVEL_INFO,"%d %d %d",timenow->tm_hour,timenow->tm_min,timenow->tm_sec);
   //draw hours
   int i;
-  for (i = 0; i < 24*15; i++) {
-    if(abs(timenow->tm_hour-(i/15)) > 2) {
-      graphics_fill_circle(ctx,get_gpoint(i,35),4);
+  for (i = 0; i < 12*15; i++) {
+    if(abs((timenow->tm_hour%12)-(i/15)) > 1) {
+      graphics_fill_circle(ctx,get_gpoint(i*2,35),4);
       
     }
   }
   for (i = 0; i < 60*6; i++) {
-    if(abs(timenow->tm_min-(i/6)) > 2) {
+    if(abs(timenow->tm_min-(i/6)) > 5) {
       graphics_fill_circle(ctx,get_gpoint(i,47),4);
       
     }
@@ -47,14 +46,13 @@ void line_layer_update_callback(Layer *layer, GContext* ctx) {
   }
 
 }
-
+//Taken from simplicity project
 void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
   // Need to be static because they're used by the system later.
   static char time_text[] = "00:00";
   static char date_text[] = "Xxxxxxxxx 00";
 
   char *time_format;
-
 
   if (clock_is_24h_style()) {
     time_format = "%R";
@@ -77,6 +75,8 @@ void handle_deinit(void) {
   tick_timer_service_unsubscribe();
 }
 
+
+
 void handle_init(void) {
   window = window_create();
   window_stack_push(window, true /* Animated */);
@@ -91,9 +91,9 @@ void handle_init(void) {
   layer_add_child(window_layer, text_layer_get_layer(text_time_layer));
 
   GRect line_frame = GRect(0, 0, 144, 168);
-  line_layer = layer_create(line_frame);
-  layer_set_update_proc(line_layer, line_layer_update_callback);
-  layer_add_child(window_layer, line_layer);
+  graphics_layer = layer_create(line_frame);
+  layer_set_update_proc(graphics_layer, graphics_layer_update_callback);
+  layer_add_child(window_layer, graphics_layer);
 
   tick_timer_service_subscribe(SECOND_UNIT, handle_minute_tick);
   // TODO: Update display here to avoid blank display on launch?

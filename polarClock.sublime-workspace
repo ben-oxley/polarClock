@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"line",
+				"line_layer_update_callback"
+			],
+			[
 				"time",
 				"timestamp"
 			],
@@ -78,10 +82,6 @@
 			[
 				"second",
 				"second_angle"
-			],
-			[
-				"line",
-				"line_layer"
 			]
 		]
 	},
@@ -96,13 +96,29 @@
 			}
 		},
 		{
-			"contents": "#include \"pebble.h\"\n#include <time.h>\n\nWindow *window;\nTextLayer *text_date_layer;\nTextLayer *text_time_layer;\nLayer *line_layer;\n\nGPoint get_gpoint(int degrees,int radius){\n  double x, y;\n  GPoint a;\n  x = radius*sin_lookup((degrees/360)*TRIG_MAX_ANGLE);\n  x /= TRIG_MAX_RATIO;\n  y = radius*cos_lookup((degrees/360)*TRIG_MAX_ANGLE);\n  y /= TRIG_MAX_RATIO;\n  a = GPoint((int)x+50,(int)y+50);\n  return a;\n}\n\nvoid line_layer_update_callback(Layer *layer, GContext* ctx) {\n  struct tm * timenow;\n  time_t timestamp = time(NULL);\n  timenow = localtime(&timestamp);\n\n  graphics_context_set_fill_color(ctx, GColorWhite);\n  \n  //draw hours\n  int i;\n  for (i = 0; i < 24; i++) {\n    if(timenow->tm_hour != i) {\n      graphics_fill_circle(ctx,get_gpoint(i*15,30),5);\n      \n    }\n  }\n\n}\n\nvoid handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {\n  // Need to be static because they're used by the system later.\n  static char time_text[] = \"00:00\";\n  static char date_text[] = \"Xxxxxxxxx 00\";\n\n  char *time_format;\n\n\n  // TODO: Only update the date when it's changed.\n  strftime(date_text, sizeof(date_text), \"%B %e\", tick_time);\n  text_layer_set_text(text_date_layer, date_text);\n\n\n  if (clock_is_24h_style()) {\n    time_format = \"%R\";\n  } else {\n    time_format = \"%I:%M\";\n  }\n\n  strftime(time_text, sizeof(time_text), time_format, tick_time);\n\n  // Kludge to handle lack of non-padded hour format string\n  // for twelve hour clock.\n  if (!clock_is_24h_style() && (time_text[0] == '0')) {\n    memmove(time_text, &time_text[1], sizeof(time_text) - 1);\n  }\n\n  text_layer_set_text(text_time_layer, time_text);\n}\n\nvoid handle_deinit(void) {\n  tick_timer_service_unsubscribe();\n}\n\nvoid handle_init(void) {\n  window = window_create();\n  window_stack_push(window, true /* Animated */);\n  window_set_background_color(window, GColorBlack);\n\n  Layer *window_layer = window_get_root_layer(window);\n\n  text_date_layer = text_layer_create(GRect(8, 68, 144-8, 168-68));\n  text_layer_set_text_color(text_date_layer, GColorWhite);\n  text_layer_set_background_color(text_date_layer, GColorClear);\n  text_layer_set_font(text_date_layer, fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_ROBOTO_CONDENSED_21)));\n  layer_add_child(window_layer, text_layer_get_layer(text_date_layer));\n\n  text_time_layer = text_layer_create(GRect(7, 92, 144-7, 168-92));\n  text_layer_set_text_color(text_time_layer, GColorWhite);\n  text_layer_set_background_color(text_time_layer, GColorClear);\n  text_layer_set_font(text_time_layer, fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_ROBOTO_BOLD_SUBSET_49)));\n  layer_add_child(window_layer, text_layer_get_layer(text_time_layer));\n\n  GRect line_frame = GRect(0, 0, 144, 168);\n  line_layer = layer_create(line_frame);\n  layer_set_update_proc(line_layer, line_layer_update_callback);\n  layer_add_child(window_layer, line_layer);\n\n  tick_timer_service_subscribe(MINUTE_UNIT, handle_minute_tick);\n  // TODO: Update display here to avoid blank display on launch?\n}\n\n\nint main(void) {\n  handle_init();\n\n  app_event_loop();\n  \n  handle_deinit();\n}\n",
-			"file": "src/polarClock.c",
-			"file_size": 3075,
-			"file_write_time": 1389050410000000,
+			"file": "/Users/ben/pebble-dev/PebbleSDK-2.0-BETA4/Examples/watchfaces/big_time/appinfo.json",
 			"settings":
 			{
-				"buffer_size": 3082,
+				"buffer_size": 1503,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "{\n  \"uuid\": \"f981099a-0028-4168-ae36-ebde27aaa665\",\n  \"shortName\": \"polarClock\",\n  \"longName\": \"polarClock\",\n  \"companyName\": \"MakeAwesomeHappen\",\n  \"versionCode\": 1,\n  \"versionLabel\": \"1.0.0\",\n  \"watchapp\": {\n    \"watchface\": true\n  },\n  \"appKeys\": {\n    \"dummy\": 0\n  },\n \"resources\": {\n    \"media\": [\n      {\n        \"menuIcon\": true,\n        \"type\": \"png\",\n        \"name\": \"IMAGE_MENU_ICON\",\n        \"file\": \"images/menu_icon_simplicity.png\"\n      },\n      {\n        \"type\": \"font\",\n        \"name\": \"FONT_ROBOTO_CONDENSED_21\",\n        \"file\": \"fonts/Roboto-Condensed.ttf\"\n      },\n      {\n        \"characterRegex\": \"[:0-9]\",\n        \"type\": \"font\",\n        \"name\": \"FONT_ROBOTO_BOLD_SUBSET_49\",\n        \"file\": \"fonts/Roboto-Bold.ttf\"\n      }\n    ]\n  }\n}\n",
+			"file": "appinfo.json",
+			"file_size": 758,
+			"file_write_time": 1389135847000000,
+			"settings":
+			{
+				"buffer_size": 758,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/polarClock.c",
+			"settings":
+			{
+				"buffer_size": 2984,
 				"line_ending": "Unix"
 			}
 		}
@@ -122,7 +138,7 @@
 	},
 	"console":
 	{
-		"height": 0.0
+		"height": 305.0
 	},
 	"distraction_free":
 	{
@@ -192,7 +208,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -207,8 +223,8 @@
 						"selection":
 						[
 							[
-								0,
-								2602
+								1726,
+								1690
 							]
 						],
 						"settings":
@@ -218,25 +234,81 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 901.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "src/polarClock.c",
+					"file": "/Users/ben/pebble-dev/PebbleSDK-2.0-BETA4/Examples/watchfaces/big_time/appinfo.json",
 					"settings":
 					{
-						"buffer_size": 3082,
+						"buffer_size": 1503,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								764,
-								764
+								232,
+								190
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "appinfo.json",
+					"settings":
+					{
+						"buffer_size": 758,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								336,
+								336
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 117.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/polarClock.c",
+					"settings":
+					{
+						"buffer_size": 2984,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1017,
+								1017
 							]
 						],
 						"settings":
@@ -246,7 +318,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 281.0,
+						"translation.y": 328.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
