@@ -88,22 +88,6 @@
 	"buffers":
 	[
 		{
-			"file": "/Users/ben/pebble-dev/PebbleSDK-2.0-BETA4/Examples/watchfaces/simplicity/src/simplicity.c",
-			"settings":
-			{
-				"buffer_size": 2602,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/ben/pebble-dev/PebbleSDK-2.0-BETA4/Examples/watchfaces/big_time/appinfo.json",
-			"settings":
-			{
-				"buffer_size": 1503,
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"contents": "{\n  \"uuid\": \"f981099a-0028-4168-ae36-ebde27aaa665\",\n  \"shortName\": \"polarClock\",\n  \"longName\": \"polarClock\",\n  \"companyName\": \"MakeAwesomeHappen\",\n  \"versionCode\": 1,\n  \"versionLabel\": \"1.0.0\",\n  \"watchapp\": {\n    \"watchface\": true\n  },\n  \"appKeys\": {\n    \"dummy\": 0\n  },\n \"resources\": {\n    \"media\": [\n      {\n        \"menuIcon\": true,\n        \"type\": \"png\",\n        \"name\": \"IMAGE_MENU_ICON\",\n        \"file\": \"images/menu_icon_simplicity.png\"\n      },\n      {\n        \"type\": \"font\",\n        \"name\": \"FONT_ROBOTO_CONDENSED_21\",\n        \"file\": \"fonts/Roboto-Condensed.ttf\"\n      },\n      {\n        \"characterRegex\": \"[:0-9]\",\n        \"type\": \"font\",\n        \"name\": \"FONT_ROBOTO_BOLD_SUBSET_49\",\n        \"file\": \"fonts/Roboto-Bold.ttf\"\n      }\n    ]\n  }\n}\n",
 			"file": "appinfo.json",
 			"file_size": 758,
@@ -118,7 +102,15 @@
 			"file": "src/polarClock.c",
 			"settings":
 			{
-				"buffer_size": 2984,
+				"buffer_size": 3012,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "readme.md",
+			"settings":
+			{
+				"buffer_size": 1826,
 				"line_ending": "Unix"
 			}
 		}
@@ -126,15 +118,27 @@
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 287.0,
+		"height": 327.0,
 		"selected_items":
 		[
+			[
+				"mar",
+				"Markdown Preview: Github Flavored Markdown: Preview in Browser"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"mark",
+				"Markdown Preview: Python Markdown: Preview in Browser"
+			],
 			[
 				"build",
 				"Set Syntax: NAnt Build File"
 			]
 		],
-		"width": 392.0
+		"width": 502.0
 	},
 	"console":
 	{
@@ -151,12 +155,12 @@
 	},
 	"file_history":
 	[
+		"/Users/ben/pebble-dev/PebbleSDK-2.0-BETA4/Examples/watchfaces/simplicity/src/simplicity.c",
+		"/Users/ben/pebble-dev/PebbleSDK-2.0-BETA4/Examples/watchfaces/big_time/appinfo.json",
 		"/Users/ben/pebble-dev/PebbleSDK-2.0-BETA1/Pebble/watches/tide/src/simplicity.c",
 		"/Users/ben/pebble-dev/PebbleSDK-2.0-BETA1/Pebble/watches/tide_watch/src/tide_watch.c",
 		"/Users/ben/pebble-dev/PebbleSDK-2.0-BETA4/Examples/pebblekit-js/weather/src/weather.c",
 		"/Users/ben/pebble-dev/PebbleSDK-2.0-BETA4/Examples/pebblekit-js/quotes/appinfo.json",
-		"/Users/ben/pebble-dev/PebbleSDK-2.0-BETA4/Examples/watchfaces/big_time/appinfo.json",
-		"/Users/ben/pebble-dev/PebbleSDK-2.0-BETA4/Examples/watchfaces/simplicity/src/simplicity.c",
 		"/Users/ben/pebble-dev/PebbleSDK-2.0-BETA4/Examples/pebblekit-js/weather/src/js/pebble-js-app.js",
 		"/Users/ben/TideWatchJS/src/js/pebble-js-app._js_old.js",
 		"/Users/ben/WeatherWatch/pythontest/readjson.py",
@@ -180,6 +184,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"line_layer",
 			"50",
 			"initial_val",
 			"send_cmd",
@@ -194,6 +199,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"graphics_layer",
 			"LINE_CENTER",
 			"WEATHER_TIDE_KEY",
 			"WEATHER_TIME_KEY",
@@ -208,28 +214,28 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "/Users/ben/pebble-dev/PebbleSDK-2.0-BETA4/Examples/watchfaces/simplicity/src/simplicity.c",
+					"file": "appinfo.json",
 					"settings":
 					{
-						"buffer_size": 2602,
+						"buffer_size": 758,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1726,
-								1690
+								236,
+								236
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/C++/C.tmLanguage",
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
@@ -241,74 +247,18 @@
 				},
 				{
 					"buffer": 1,
-					"file": "/Users/ben/pebble-dev/PebbleSDK-2.0-BETA4/Examples/watchfaces/big_time/appinfo.json",
-					"settings":
-					{
-						"buffer_size": 1503,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								232,
-								190
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "appinfo.json",
-					"settings":
-					{
-						"buffer_size": 758,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								336,
-								336
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 117.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
 					"file": "src/polarClock.c",
 					"settings":
 					{
-						"buffer_size": 2984,
+						"buffer_size": 3012,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1017,
-								1017
+								1984,
+								1984
 							]
 						],
 						"settings":
@@ -318,7 +268,43 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 328.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 2,
+					"file": "readme.md",
+					"settings":
+					{
+						"buffer_size": 1826,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1448,
+								1448
+							]
+						],
+						"settings":
+						{
+							"parser": "github",
+							"syntax": "Packages/Markdown/Markdown.tmLanguage",
+							"tab_size": 2,
+							"target": "browser",
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 710.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -343,11 +329,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.5,
 			1.0
 		],
 		"rows":

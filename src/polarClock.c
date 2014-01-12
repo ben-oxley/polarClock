@@ -4,6 +4,7 @@
 Window *window;
 TextLayer *text_time_layer;
 Layer *graphics_layer;
+Layer *seconds_layer;
 
 GPoint get_gpoint(int degrees,int radius){
   double x = degrees, y = degrees;
@@ -27,25 +28,38 @@ void graphics_layer_update_callback(Layer *layer, GContext* ctx) {
   //draw hours
   int i;
   for (i = 0; i < 12*15; i++) {
-    if(abs((timenow->tm_hour%12)-(i/15)) > 1) {
+    if(abs((timenow->tm_hour%12)-(i/15)) > 1 && abs((i/15)-(timenow->tm_hour%12)) < 11) {
       graphics_fill_circle(ctx,get_gpoint(i*2,35),4);
       
     }
   }
   for (i = 0; i < 60*6; i++) {
-    if(abs(timenow->tm_min-(i/6)) > 5) {
+    if(abs(timenow->tm_min-(i/6)) > 5 && abs((i/6)-timenow->tm_min) < 55) {
       graphics_fill_circle(ctx,get_gpoint(i,47),4);
       
     }
   }
+
+}
+
+void seconds_layer_update_callback(Layer *layer, GContext* ctx) {
+  struct tm * timenow;
+  time_t timestamp = time(NULL);
+  timenow = localtime(&timestamp);
+
+  graphics_context_set_fill_color(ctx, GColorWhite);
+  //APP_LOG(APP_LOG_LEVEL_INFO,"%d %d %d",timenow->tm_hour,timenow->tm_min,timenow->tm_sec);
+  //draw hours
+  int i;
   for (i = 0; i < 60*6; i++) {
-    if(abs(timenow->tm_sec-(i/6)) > 5) {
+    if(abs(timenow->tm_sec-(i/6)) > 5 && abs((i/6)-timenow->tm_sec) < 55 ) {
       graphics_fill_circle(ctx,get_gpoint(i,60),4);
       
     }
   }
 
 }
+
 //Taken from simplicity project
 void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
   // Need to be static because they're used by the system later.
@@ -69,6 +83,12 @@ void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
   }
 
   text_layer_set_text(text_time_layer, time_text);
+  layer_mark_dirty(graphics_layer);
+}
+
+void handle_second_tick(struct tm *tick_time, TimeUnits units_changed) {
+  layer_mark_dirty(seconds_layer);
+  if (tick_time->tm_sec%60==0) handle_minute_tick(tick_time,units_changed);
 }
 
 void handle_deinit(void) {
@@ -78,6 +98,7 @@ void handle_deinit(void) {
 
 
 void handle_init(void) {
+  struct tm * timenow;
   window = window_create();
   window_stack_push(window, true /* Animated */);
   window_set_background_color(window, GColorBlack);
@@ -95,8 +116,17 @@ void handle_init(void) {
   layer_set_update_proc(graphics_layer, graphics_layer_update_callback);
   layer_add_child(window_layer, graphics_layer);
 
-  tick_timer_service_subscribe(SECOND_UNIT, handle_minute_tick);
+  seconds_layer = layer_create(line_frame);
+  layer_set_update_proc(seconds_layer, seconds_layer_update_callback);
+  layer_add_child(window_layer, seconds_layer);
+
+  tick_timer_service_subscribe(SECOND_UNIT, handle_second_tick);
+  //tick_timer_service_subscribe(MINUTE_UNIT, handle_minute_tick);
   // TODO: Update display here to avoid blank display on launch?
+
+  time_t timestamp = time(NULL);
+  timenow = localtime(&timestamp);
+  handle_minute_tick(timenow,MINUTE_UNIT);
 }
 
 
