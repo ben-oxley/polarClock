@@ -11,7 +11,7 @@
   "appKeys": {
     "dummy": 0
   },
- "resources": {
+  "resources": {
     "media": [
       {
         "menuIcon": true,
@@ -31,5 +31,10 @@
         "file": "fonts/Roboto-Bold.ttf"
       }
     ]
-  }
+  },
+  "targetPlatforms": [
+    "aplite",
+    "basalt"
+  ],
+  "sdkVersion": "3"
 }
